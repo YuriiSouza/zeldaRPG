@@ -19,15 +19,16 @@ class Level:
         
         
     def create_map(self):
-        for row_index, row in enumerate(WORLD_MAP):
-            for col_index, col in enumerate(row):
-                x = col_index * TILESIZE
-                y = row_index * TILESIZE
-                
-                if col == 'X':
-                    Tile((x,y), [self.visible_sprites, self.obstacle_sprites])  
-                if col == 'P':
-                    self.player = Player((x,y), [self.visible_sprites],self.obstacle_sprites)
+        #for row_index, row in enumerate(WORLD_MAP):
+          #  for col_index, col in enumerate(row):
+           #     x = col_index * TILESIZE
+            #    y = row_index * TILESIZE
+             #   
+              #  if col == 'X':
+               #     Tile((x,y), [self.visible_sprites, self.obstacle_sprites])  
+                #if col == 'P':
+                 #   self.player = Player((x,y), [self.visible_sprites],self.obstacle_sprites)
+        self.player = Player((1100,1705), [self.visible_sprites],self.obstacle_sprites)
         
     def run(self):
         #update and draw the game
@@ -47,7 +48,7 @@ class YSortCameraGroup(pygame.sprite.Group):
         self.offset = pygame.math.Vector2()
         
         #creating the floor
-        self.floor_surf = pygame.image.load('/graphics/tilemap/ground.png').convert()
+        self.floor_surf = pygame.image.load("C:/Users/yurip/OneDrive/Documentos/GitHub/zeldaRPG/Zelda-main/Jogo/graphics/map/ground.png").convert()
         self.floor_rect = self.floor_surf.get_rect(topleft = (0, 0))
     
     def custom_draw(self, player):
@@ -56,7 +57,12 @@ class YSortCameraGroup(pygame.sprite.Group):
         self.offset.x = player.rect.centerx - self.half_width
         self.offset.y = player.rect.centery - self.half_height
         
+        #drawing the floor
+        self.floor_offset_pos = self.floor_rect.topleft - self.offset
+        self.display_surface.blit(self.floor_surf, self.floor_offset_pos)
+        
         for sprite in sorted(self.sprites(), key = lambda sprite: sprite.rect.centery):
             offset_pos = sprite.rect.topleft - self.offset  
             self.display_surface.blit(sprite.image,offset_pos)
             
+        
