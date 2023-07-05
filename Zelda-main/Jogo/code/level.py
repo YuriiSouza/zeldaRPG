@@ -3,6 +3,7 @@ from settings import *
 from tile import Tile
 from player import Player
 from debug import debug
+from support import import_csv_layout
 
 class Level:
     def __init__(self):
@@ -19,16 +20,22 @@ class Level:
         
         
     def create_map(self):
-        #for row_index, row in enumerate(WORLD_MAP):
-          #  for col_index, col in enumerate(row):
-           #     x = col_index * TILESIZE
-            #    y = row_index * TILESIZE
-             #   
-              #  if col == 'X':
-               #     Tile((x,y), [self.visible_sprites, self.obstacle_sprites])  
-                #if col == 'P':
-                 #   self.player = Player((x,y), [self.visible_sprites],self.obstacle_sprites)
+        layouts = {
+            'boundary' : import_csv_layout('C:/Users/yurip/OneDrive/Documentos/GitHub/zeldaRPG/Zelda-main/Jogo/map/mapa_floorBlocks.csv')
+        }
+        
+        for styles, layout in layouts.items():
+            for row_index, row in enumerate(layout):
+                for col_index, col in enumerate(row):
+                    if col != '-1':    
+                        x = col_index * TILESIZE
+                        y = row_index * TILESIZE
+                        if styles == 'boundary':
+                            Tile((x, y), [self.obstacle_sprites], 'invisible')
+                            
         self.player = Player((1100,1705), [self.visible_sprites],self.obstacle_sprites)
+        
+        
         
     def run(self):
         #update and draw the game
